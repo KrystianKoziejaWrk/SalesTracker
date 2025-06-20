@@ -1,39 +1,27 @@
-//
-//  Sale.swift
-//  SalesTracker
-//
-//  Created by Krystian Kozieja on 6/16/25.
-//
+// Models/Sale.swift
 import Foundation
 
-struct Sale: Codable, Identifiable {
-  let id = UUID()
-  var isNew: Bool
-  var whoSold: String
-  var name: String
-  var cost: Double
-  var tip: Double
-  var notes: String
-  var phone: String
-  var dateOfJob: String     // e.g. "2025-06-17"
-  var timeOfJob: String     // e.g. "14:30"
-  var collected: Double
-  var worked: String        // e.g. "2h" or number of hours
+struct Sale: Identifiable, Codable {
+  // synthesized `init(from:)` will fill only the CodingKeys below;
+  // all other vars get their default values:
+  var id        = UUID()
+  var sheetId   = ""         // ← default so Decodable init doesn’t need it
+  var whoSold   = ""
+  var name      = ""
+  var cost      = 0.0
+  var tip       = 0.0
+  var notes     = ""
+  var phone     = ""
+  var dateOfJob = ""
+  var timeOfJob = ""
+  var collected = 0.0
+  var worked    = ""
 
-  var dictionary: [String:Any] {
-    return [
-      "isNew":        isNew,
-      "whoSold":      whoSold,
-      "name":         name,
-      "cost":         cost,
-      "tip":          tip,
-      "notes":        notes,
-      "phone":        phone,
-      "dateOfJob":    dateOfJob,
-      "timeOfJob":    timeOfJob,
-      "collected":    collected,
-      "worked":       worked
-    ]
+  private enum CodingKeys: String, CodingKey {
+    // exactly the fields your GET endpoint returns:
+    case whoSold, name, cost, tip,
+         notes, phone, dateOfJob, timeOfJob,
+         collected, worked
   }
 }
 

@@ -4,7 +4,6 @@
 //
 //  Created by Krystian Kozieja on 6/20/25.
 //
-
 import SwiftUI
 
 struct SettingsView: View {
@@ -27,7 +26,7 @@ struct SettingsView: View {
 
   func save() {
     // Extract sheetId from rawURL
-    let pattern = "/d/([a-zA-Z0-9-_]+)"
+    let pattern = "/d/([A-Za-z0-9_-]+)"
     let id: String
     if let match = rawURL.range(of: pattern, options: .regularExpression) {
       let group = String(rawURL[match])

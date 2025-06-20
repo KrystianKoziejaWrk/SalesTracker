@@ -1,132 +1,118 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+/* eslint-disable */
+const { onRequest }        = require('firebase-functions/v2/https');
+const { setGlobalOptions } = require('firebase-functions/v2');
+const express              = require('express');
+const cors                 = require('cors');
+const { google }           = require('googleapis');
 
-const functions = require("firebase-functions");
-const express = require("express");
-const cors = require("cors");
-const {google} = require("googleapis");
+// 1) Pin to Node18 & us-central1
+setGlobalOptions({ region: 'us-central1', runtime: 'nodejs18' });
 
 const app = express();
 app.use(cors(), express.json());
 
-// Secrets from Firebase config
-const FUNCTIONS_SECRET = functions.config().app.secret;
-const SERVICE_ACCOUNT_KEY = functions.config().service_account_key;
+// 2) Your one secret
+const FUNCTIONS_SECRET = 'door2door123!@#';
 
-// Sheets API scope
-const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
+// 3) Sheets scope
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 
-// Helper to create a Sheets client
-function sheetsClient() {
-  const key = JSON.parse(SERVICE_ACCOUNT_KEY);
-  const auth = new google.auth.JWT(
-      key.client_email,
-      null,
-      key.private_key,
-      SCOPES,
-  );
-  return google.sheets({version: "v4", auth});
+// 4) Build client via ADC
+const auth = new google.auth.GoogleAuth({ scopes: SCOPES });
+async function sheetsClient() {
+  const client = await auth.getClient();
+  return google.sheets({ version: 'v4', auth: client });
 }
 
-// Append a sale with 11 columns
-app.post("/appendSale", async (req, res) => {
-  if (req.headers["x-app-secret"] !== FUNCTIONS_SECRET) {
-    return res.status(401).send("Unauthorized");
-  }
+// 5) Debug headers
+app.use((req, res, next) => {
+  console.log('🔐 Expected secret:', FUNCTIONS_SECRET);
+  console.log('🔑   Got header   :', req.headers['x-app-secret']);
+  next();
+});
 
+// 6) appendSale endpoint
+app.post('/appendSale', async (req, res) => {
+  if (req.headers['x-app-secret'] !== FUNCTIONS_SECRET) {
+    return res.status(401).send('Unauthorized');
+  }
   const {
-    sheetId,
-    isNew,
-    whoSold,
-    name,
-    cost,
-    tip,
-    notes,
-    phone,
-    dateOfJob,
-    timeOfJob,
-    collected,
-    worked,
+    sheetId, whoSold, name, cost,
+    tip, notes, phone, dateOfJob,
+    timeOfJob, collected, worked
   } = req.body;
 
-  if (!sheetId) {
-    return res.status(400).send("Missing sheetId");
-  }
+  if (!sheetId) return res.status(400).send('Missing sheetId');
 
   const row = [
-    isNew ? "TRUE" : "FALSE",
-    whoSold,
-    name,
-    cost,
-    tip,
-    notes,
-    phone,
-    dateOfJob,
-    timeOfJob,
-    collected,
-    worked,
+    whoSold, name, cost, tip,
+    notes, phone, dateOfJob,
+    timeOfJob, collected, worked
   ];
 
   try {
-    const sheets = sheetsClient();
+    const sheets = await sheetsClient();
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
-      range: "Sales!A:K",
-      valueInputOption: "USER_ENTERED",
-      requestBody: {values: [row]},
+      range: 'Sales!A:J',
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: [row] }
     });
-    res.json({success: true});
+    res.json({ success: true });
   } catch (err) {
-    console.error("Append failed:", err);
-    res.status(500).json({error: err.toString()});
+    console.error('Append failed:', err);
+    res.status(500).json({ error: err.toString() });
   }
 });
 
-// Get all sales rows (raw 11-field JSON)
-app.get("/getSales", async (req, res) => {
-  if (req.headers["x-app-secret"] !== FUNCTIONS_SECRET) {
-    return res.status(401).send("Unauthorized");
+
+// 6.5) getSales endpoint
+app.get('/getSales', async (req, res) => {
+  // 1) Check your secret header
+  //what up
+  if (req.headers['x-app-secret'] !== FUNCTIONS_SECRET) {
+    return res.status(401).send('Unauthorized');
   }
 
-  const {sheetId} = req.query;
+  // 2) Expect sheetId as a query parameter
+  const sheetId = req.query.sheetId;
   if (!sheetId) {
-    return res.status(400).send("Missing sheetId");
+    return res.status(400).send('Missing sheetId');
   }
 
   try {
-    const sheets = sheetsClient();
-    const result = await sheets.spreadsheets.values.get({
+    const sheets = await sheetsClient();
+    // 3) Read A:J (whoSold, name, cost, tip, notes, phone, dateOfJob, timeOfJob, collected, worked)
+    const resp = await sheets.spreadsheets.values.get({
       spreadsheetId: sheetId,
-      range: "Sales!A2:K",
+      range: 'Sales!A:J',
     });
 
-    const rows = (result.data.values || []).map((r) => ({
-      isNew: r[0] === "TRUE",
-      whoSold: r[1],
-      name: r[2],
-      cost: parseFloat(r[3]) || 0,
-      tip: parseFloat(r[4]) || 0,
-      notes: r[5],
-      phone: r[6],
-      dateOfJob: r[7],
-      timeOfJob: r[8],
-      collected: parseFloat(r[9]) || 0,
-      worked: r[10],
+    const rows = (resp.data.values || []).reverse();
+
+    // 4) Map each row array to an object
+    const sales = rows.map(cols => ({
+      whoSold:   cols[0] || '',
+      name:      cols[1] || '',
+      cost:     parseFloat(cols[2]) || 0,
+      tip:      parseFloat(cols[3]) || 0,
+      notes:     cols[4] || '',
+      phone:     cols[5] || '',
+      dateOfJob: cols[6] || '',
+      timeOfJob: cols[7] || '',
+      collected: parseFloat(cols[8]) || 0,
+      worked:    cols[9] || ''
     }));
 
-    res.json(rows);
+    // 5) Return JSON array
+    res.json(sales);
+
   } catch (err) {
-    console.error("Fetch failed:", err);
-    res.status(500).json({error: err.toString()});
+    console.error('Read failed:', err);
+    res.status(500).json({ error: err.toString() });
   }
 });
 
-// Export the API
-exports.api = functions.https.onRequest(app);
 
+// 7) Export
+exports.api = onRequest(app);

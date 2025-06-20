@@ -6,6 +6,13 @@ const { google } = require('googleapis');
 
 const app = express();
 app.use(cors(), express.json());
+// DEBUG: log headers & body on every request
+app.use((req, res, next) => {
+  console.log('>>> incoming headers:', req.headers);
+  console.log('>>> incoming body:', req.body);
+  next();
+});
+
 
 // Load secrets from Firebase config
 const FUNCTIONS_SECRET      = functions.config().app.secret;
