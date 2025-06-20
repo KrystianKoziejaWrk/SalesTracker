@@ -1,19 +1,21 @@
 module.exports = {
+  root: true,
   env: {
     es6: true,
     node: true,
   },
   parserOptions: {
-    "ecmaVersion": 2018,
+    ecmaVersion: 2018,
   },
   extends: [
     "eslint:recommended",
     "google",
   ],
   rules: {
+    "require-jsdoc": "off", // turn off JSDoc requirement
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
-    "quotes": ["error", "double", {"allowTemplateLiterals": true}],
+    "quotes": ["error", "double", {allowTemplateLiterals: true}],
   },
   overrides: [
     {
