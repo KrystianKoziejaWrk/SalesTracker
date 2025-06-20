@@ -24,28 +24,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C37DC6822E00C5B000106E8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = text; path = Assets.xcassets; sourceTree = "<group>"; };
+		C37DC6832E00C72F00106E8A /* SalesTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesTrackerApp.swift; sourceTree = "<group>"; };
+		C37DC6842E00C73C00106E8A /* Sale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sale.swift; sourceTree = "<group>"; };
+		C37DC6852E00C74A00106E8A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C37DC6862E00C75400106E8A /* SheetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetAPI.swift; sourceTree = "<group>"; };
+		C37DC6872E00C76D00106E8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C37DC6882E06083200106E8A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C37DC6892E060D3A00106E8A /* SaleEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleEntryView.swift; sourceTree = "<group>"; };
+		C37DC68A2E060D7F00106E8A /* SalesLiftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesLiftView.swift; sourceTree = "<group>"; };
+		C37DC68C2E060DAA00106E8A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C3DE262F2DFE3100009A2B67 /* SalesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DE263C2DFE3101009A2B67 /* SalesTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DE26462DFE3101009A2B67 /* SalesTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		C3DE26312DFE3100009A2B67 /* SalesTracker */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SalesTracker;
-			sourceTree = "<group>";
-		};
-		C3DE263F2DFE3101009A2B67 /* SalesTrackerTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SalesTrackerTests;
-			sourceTree = "<group>";
-		};
-		C3DE26492DFE3101009A2B67 /* SalesTrackerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SalesTrackerUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		C3DE262C2DFE3100009A2B67 /* Frameworks */ = {
@@ -72,12 +64,83 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C357B4D92E0010D60091373C /* SalesTracker */ = {
+			isa = PBXGroup;
+			children = (
+				C37DC6812E00C59500106E8A /* Resources */,
+				C37DC6802E00C58900106E8A /* Utilities */,
+				C37DC67F2E00C58100106E8A /* ViewModels */,
+				C37DC67E2E00C57A00106E8A /* Views */,
+				C37DC67D2E00C57000106E8A /* Services */,
+				C37DC67C2E00C56A00106E8A /* Models */,
+				C37DC67B2E00C17800106E8A /* App */,
+			);
+			path = SalesTracker;
+			sourceTree = "<group>";
+		};
+		C37DC67B2E00C17800106E8A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				C37DC6832E00C72F00106E8A /* SalesTrackerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C37DC67C2E00C56A00106E8A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C37DC6842E00C73C00106E8A /* Sale.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C37DC67D2E00C57000106E8A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				C37DC6862E00C75400106E8A /* SheetAPI.swift */,
+				C37DC6852E00C74A00106E8A /* Constants.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C37DC67E2E00C57A00106E8A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C37DC68C2E060DAA00106E8A /* MainView.swift */,
+				C37DC68A2E060D7F00106E8A /* SalesLiftView.swift */,
+				C37DC6892E060D3A00106E8A /* SaleEntryView.swift */,
+				C37DC6882E06083200106E8A /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C37DC67F2E00C58100106E8A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C37DC6802E00C58900106E8A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		C37DC6812E00C59500106E8A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C37DC6872E00C76D00106E8A /* Info.plist */,
+				C37DC6822E00C5B000106E8A /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C3DE26262DFE3100009A2B67 = {
 			isa = PBXGroup;
 			children = (
-				C3DE26312DFE3100009A2B67 /* SalesTracker */,
-				C3DE263F2DFE3101009A2B67 /* SalesTrackerTests */,
-				C3DE26492DFE3101009A2B67 /* SalesTrackerUITests */,
+				C357B4D92E0010D60091373C /* SalesTracker */,
 				C3DE26302DFE3100009A2B67 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,9 +170,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				C3DE26312DFE3100009A2B67 /* SalesTracker */,
-			);
 			name = SalesTracker;
 			packageProductDependencies = (
 			);
@@ -130,9 +190,6 @@
 			dependencies = (
 				C3DE263E2DFE3101009A2B67 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				C3DE263F2DFE3101009A2B67 /* SalesTrackerTests */,
-			);
 			name = SalesTrackerTests;
 			packageProductDependencies = (
 			);
@@ -152,9 +209,6 @@
 			);
 			dependencies = (
 				C3DE26482DFE3101009A2B67 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				C3DE26492DFE3101009A2B67 /* SalesTrackerUITests */,
 			);
 			name = SalesTrackerUITests;
 			packageProductDependencies = (
