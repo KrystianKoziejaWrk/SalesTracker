@@ -2,3 +2,5 @@ node_modules/
 functions/salestrackerbackend-88b16c26f7ae.json/
 *.localfunctions/serviceAccount.json
 firebase.json
+functions/serviceAccount.json
+firebase.json
