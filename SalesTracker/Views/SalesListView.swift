@@ -1,70 +1,83 @@
-// Views/SalesListView.swift
 import SwiftUI
+import UIKit
 
 struct SalesListView: View {
   @StateObject private var vm = SalesListViewModel()
   @State private var showCopiedToast = false
 
-  /// Read the sheet ID once from UserDefaults
   private var sheetId: String {
     UserDefaults.standard.string(forKey: "sheetId") ?? ""
   }
 
   var body: some View {
     NavigationView {
-      List(vm.sales) { sale in
-        VStack(alignment: .leading, spacing: 6) {
-          // Name
-          Text(sale.name)
-            .font(.headline)
+      List {
+        ForEach(vm.sales) { sale in
+          NavigationLink(destination: SaleEntryView(editSale: sale, rowIndex: sale.rowIndex)) {
+            VStack(alignment: .leading, spacing: 6) {
+              // Name
+              Text(sale.name)
+                .font(.headline)
 
-          // Cost & Tip
-          HStack {
-            Text("Cost: $\(sale.cost, specifier: "%.2f")")
-            Text("Tip: $\(sale.tip, specifier: "%.2f")")
-          }
-          .font(.subheadline)
-
-          // Notes (tap to copy)
-          Text("Notes: \(sale.notes)")
-            .font(.subheadline)
-            .foregroundColor(.blue)
-            .onTapGesture {
-              UIPasteboard.general.string = sale.notes
-              withAnimation { showCopiedToast = true }
-              DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                withAnimation { showCopiedToast = false }
+              // Cost & Tip (ensure they’re Doubles)
+              HStack {
+                Text("Cost: $\(sale.cost ?? 0, specifier: "%.2f")")
+                Text("Tip: $\(sale.tip ?? 0, specifier: "%.2f")")
               }
+              .font(.subheadline)
+
+              // Notes (tap to copy)
+              Text("Notes: \(sale.notes)")
+                .font(.subheadline)
+                .foregroundColor(.blue)
+                .onTapGesture {
+                  UIPasteboard.general.string = sale.notes
+                  withAnimation { showCopiedToast = true }
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    withAnimation { showCopiedToast = false }
+                  }
+                }
+
+              // Phone (tap to message)
+              if let phone = sale.phone {
+                if let smsURL = URL(string: "sms:\(phone)") {
+                  Link("📱 \(phone)", destination: smsURL)
+                    .font(.subheadline)
+                } else {
+                  Text("Phone: \(phone)")
+                    .font(.subheadline)
+                }
+              }
+
+              // Address (tap to open in Maps)
+              Text("🏠 Address: \(sale.address ?? "")")
+                .font(.subheadline)
+                .foregroundColor(.blue)
+                .onTapGesture {
+                    if let address = sale.address, !address.isEmpty {
+                        let encoded = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+                        if let url = URL(string: "http://maps.apple.com/?q=\(encoded)") {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                }
+
+              // Date & Time
+              HStack {
+                Text("Date: \(sale.dateOfJob)")
+                Spacer()
+                Text("Time: \(sale.timeOfJob)")
+              }
+              .font(.footnote)
+              .foregroundColor(.secondary)
             }
-
-          // Phone (tap to message)
-          if let smsURL = URL(string: "sms:\(sale.phone)") {
-            Link("📱 \(sale.phone)", destination: smsURL)
-              .font(.subheadline)
-          } else {
-            Text("Phone: \(sale.phone)")
-              .font(.subheadline)
+            .padding(.vertical, 8)
           }
-
-          // Date & Time
-          HStack {
-            Text("Date: \(sale.dateOfJob)")
-            Spacer()
-            Text("Time: \(sale.timeOfJob)")
-          }
-          .font(.footnote)
-          .foregroundColor(.secondary)
         }
-        .padding(.vertical, 8)
       }
       .navigationTitle("Customers")
-      .onAppear {
-        vm.loadSales(sheetId: sheetId)
-      }
-      .refreshable {
-        vm.loadSales(sheetId: sheetId)
-      }
-      // Toast overlay
+      .onAppear { vm.loadSales(sheetId: sheetId) }
+      .refreshable { vm.loadSales(sheetId: sheetId) }
       .overlay(
         VStack {
           if showCopiedToast {
@@ -82,10 +95,3 @@ struct SalesListView: View {
     }
   }
 }
-
-struct SalesListView_Previews: PreviewProvider {
-  static var previews: some View {
-    SalesListView()
-  }
-}
-

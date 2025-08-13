@@ -4,14 +4,15 @@ struct RequestSale: Codable {
   let sheetId:   String
   let whoSold:   String
   let name:      String
-  let cost:      Double
-  let tip:       Double
+  let cost:      Double?
+  let tip:       Double?
   let notes:     String
-  let phone:     String
+  let phone:     String?
   let dateOfJob: String
   let timeOfJob: String
-  let collected: Double
+  let collected: Double?
   let worked:    String
+  let address:   String?
 }
 
 enum APIError: Error {
@@ -51,7 +52,8 @@ final class SheetAPI {
       dateOfJob: sale.dateOfJob,
       timeOfJob: sale.timeOfJob,
       collected: sale.collected,
-      worked:    sale.worked
+      worked:    sale.worked,
+      address:   sale.address
     )
 
     do {
@@ -102,6 +104,59 @@ final class SheetAPI {
         } catch {
           completion(.failure(.decodingError(error)))
         }
+      } else {
+        completion(.failure(.serverError(
+          status: http.statusCode,
+          message: HTTPURLResponse.localizedString(forStatusCode: http.statusCode)
+        )))
+      }
+    }.resume()
+  }
+
+  func updateSale(_ sale: Sale,
+                 completion: @escaping (Result<Bool,APIError>) -> Void)
+  {
+    guard let rowIndex = sale.rowIndex else {
+      return completion(.failure(.invalidURL)) // Or a custom error for missing rowIndex
+    }
+    guard let url = URL(string: baseURL + "/updateSale") else {
+      return completion(.failure(.invalidURL))
+    }
+    var req = URLRequest(url: url)
+    req.httpMethod = "POST"
+    req.setValue(secret, forHTTPHeaderField: "x-app-secret")
+    req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+    let liveSheetId = UserDefaults.standard.string(forKey: "sheetId") ?? sale.sheetId
+    let reqObj: [String: Any] = [
+      "sheetId": liveSheetId,
+      "rowIndex": rowIndex,
+      "whoSold": sale.whoSold,
+      "name": sale.name,
+      "cost": sale.cost ?? 0,
+      "tip": sale.tip ?? 0,
+      "notes": sale.notes,
+      "phone": sale.phone ?? "",
+      "dateOfJob": sale.dateOfJob,
+      "timeOfJob": sale.timeOfJob,
+      "collected": sale.collected ?? 0,
+      "worked": sale.worked,
+      "address": sale.address ?? ""
+    ]
+    do {
+      req.httpBody = try JSONSerialization.data(withJSONObject: reqObj, options: [])
+    } catch {
+      return completion(.failure(.decodingError(error)))
+    }
+
+    URLSession.shared.dataTask(with: req) { data, resp, err in
+      if let err = err { return completion(.failure(.networkError(err))) }
+      guard let http = resp as? HTTPURLResponse, let data = data else {
+        return completion(.failure(.unknownResponse))
+      }
+      if http.statusCode == 200 {
+        let ok = (try? JSONDecoder().decode([String:Bool].self, from: data)["success"]) ?? false
+        completion(.success(ok))
       } else {
         completion(.failure(.serverError(
           status: http.statusCode,

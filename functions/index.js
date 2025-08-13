@@ -38,7 +38,7 @@ app.post('/appendSale', async (req, res) => {
   }
   const {
     sheetId, whoSold, name, cost,
-    tip, notes, phone, dateOfJob,
+    tip, address, notes, phone, dateOfJob,
     timeOfJob, collected, worked
   } = req.body;
 
@@ -46,15 +46,26 @@ app.post('/appendSale', async (req, res) => {
 
   const row = [
     whoSold, name, cost, tip,
-    notes, phone, dateOfJob,
+    address, notes, phone, dateOfJob,
     timeOfJob, collected, worked
   ];
 
   try {
     const sheets = await sheetsClient();
-    await sheets.spreadsheets.values.append({
+    // Get all values in the sheet to find the last non-empty row
+    const getResp = await sheets.spreadsheets.values.get({
       spreadsheetId: sheetId,
-      range: 'Sales!A:J',
+      range: 'Sales!A:K',
+    });
+    const allRows = getResp.data.values || [];
+    // The next row index is allRows.length + 1 (1-based)
+    const nextRow = allRows.length + 1;
+    // Build the range for the next row, always starting at A
+    const targetRange = `Sales!A${nextRow}:K${nextRow}`;
+    // Write the new row to the next row, starting at column A
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: targetRange,
       valueInputOption: 'USER_ENTERED',
       requestBody: { values: [row] }
     });
@@ -90,25 +101,66 @@ app.get('/getSales', async (req, res) => {
 
     const rows = (resp.data.values || []).reverse();
 
-    // 4) Map each row array to an object
-    const sales = rows.map(cols => ({
-      whoSold:   cols[0] || '',
-      name:      cols[1] || '',
-      cost:     parseFloat(cols[2]) || 0,
-      tip:      parseFloat(cols[3]) || 0,
-      notes:     cols[4] || '',
-      phone:     cols[5] || '',
-      dateOfJob: cols[6] || '',
-      timeOfJob: cols[7] || '',
-      collected: parseFloat(cols[8]) || 0,
-      worked:    cols[9] || ''
-    }));
+    // 4) Map each row array to an object, include rowIndex
+    const sales = rows
+      .map((cols, i) => ({
+        whoSold:   cols[0] || '',
+        name:      cols[1] || '',
+        cost:      cols[2] ? parseFloat(cols[2]) : null,
+        tip:       cols[3] ? parseFloat(cols[3]) : null,
+        address:   cols[4] || '',
+        notes:     cols[5] || '',
+        phone:     cols[6] || '',
+        dateOfJob: cols[7] || '',
+        timeOfJob: cols[8] || '',
+        collected: cols[9] ? parseFloat(cols[9]) : null,
+        worked:    cols[10] || '',
+        rowIndex: rows.length - i
+      }))
+      .filter(sale => sale.name || sale.worked || sale.collected || sale.address || sale.whoSold);
 
     // 5) Return JSON array
     res.json(sales);
 
   } catch (err) {
     console.error('Read failed:', err);
+    res.status(500).json({ error: err.toString() });
+  }
+});
+
+// 6.7) updateSale endpoint
+app.post('/updateSale', async (req, res) => {
+  if (req.headers['x-app-secret'] !== FUNCTIONS_SECRET) {
+    return res.status(401).send('Unauthorized');
+  }
+  const {
+    sheetId, rowIndex, whoSold, name, cost,
+    tip, address, notes, phone, dateOfJob,
+    timeOfJob, collected, worked
+  } = req.body;
+
+  if (!sheetId || !rowIndex) return res.status(400).send('Missing sheetId or rowIndex');
+
+  const row = [
+    whoSold, name, cost, tip,
+    address, notes, phone, dateOfJob,
+    timeOfJob, collected, worked
+  ];
+
+  try {
+    const sheets = await sheetsClient();
+    // Build the range for the target row, always starting at A
+    const targetRange = `Sales!A${rowIndex}:K${rowIndex}`;
+    // Overwrite the row at rowIndex
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: sheetId,
+      range: targetRange,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: [row] }
+    });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Update failed:', err);
     res.status(500).json({ error: err.toString() });
   }
 });

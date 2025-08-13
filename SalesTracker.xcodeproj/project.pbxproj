@@ -16,6 +16,8 @@
 		C37DC6952E1192AE00106E8A /* SaleEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6942E1192A400106E8A /* SaleEditView.swift */; };
 		C37DC6962E18A02000106E8A /* SalesTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6832E00C72F00106E8A /* SalesTrackerApp.swift */; };
 		C37DC6982E18BC4700106E8A /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6972E18BC3D00106E8A /* SalesListViewModel.swift */; };
+		C37DC6A62E4ACC2B00106E8A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6A52E4ACC2B00106E8A /* HomeView.swift */; };
+		C37DC6A82E4AE58B00106E8A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6A72E4AE58B00106E8A /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		C37DC68C2E060DAA00106E8A /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C37DC6942E1192A400106E8A /* SaleEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleEditView.swift; sourceTree = "<group>"; };
 		C37DC6972E18BC3D00106E8A /* SalesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListViewModel.swift; sourceTree = "<group>"; };
+		C37DC6A52E4ACC2B00106E8A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		C37DC6A72E4AE58B00106E8A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		C3DE262F2DFE3100009A2B67 /* SalesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DE263C2DFE3101009A2B67 /* SalesTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DE26462DFE3101009A2B67 /* SalesTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +124,7 @@
 		C37DC67E2E00C57A00106E8A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C37DC6A52E4ACC2B00106E8A /* HomeView.swift */,
 				C37DC6942E1192A400106E8A /* SaleEditView.swift */,
 				C37DC68C2E060DAA00106E8A /* MainView.swift */,
 				C37DC68A2E060D7F00106E8A /* SalesListView.swift */,
@@ -140,6 +145,7 @@
 		C37DC6802E00C58900106E8A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C37DC6A72E4AE58B00106E8A /* LocationManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -309,6 +315,8 @@
 				C37DC6902E117F6D00106E8A /* SaleEntryView.swift in Sources */,
 				C37DC68D2E117F5400106E8A /* SettingsView.swift in Sources */,
 				C37DC6952E1192AE00106E8A /* SaleEditView.swift in Sources */,
+				C37DC6A82E4AE58B00106E8A /* LocationManager.swift in Sources */,
+				C37DC6A62E4ACC2B00106E8A /* HomeView.swift in Sources */,
 				C37DC6922E1187EC00106E8A /* SheetAPI.swift in Sources */,
 				C37DC68E2E117F6500106E8A /* MainView.swift in Sources */,
 				C37DC6962E18A02000106E8A /* SalesTrackerApp.swift in Sources */,
@@ -479,6 +487,7 @@
 				DEVELOPMENT_TEAM = Q44XZZNZ34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow Location Grabber";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -507,6 +516,7 @@
 				DEVELOPMENT_TEAM = Q44XZZNZ34;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow Location Grabber";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
