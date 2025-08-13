@@ -18,6 +18,7 @@
 		C37DC6982E18BC4700106E8A /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6972E18BC3D00106E8A /* SalesListViewModel.swift */; };
 		C37DC6A62E4ACC2B00106E8A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6A52E4ACC2B00106E8A /* HomeView.swift */; };
 		C37DC6A82E4AE58B00106E8A /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37DC6A72E4AE58B00106E8A /* LocationManager.swift */; };
+		C37DC6AA2E4C446B00106E8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C37DC6A92E4C446B00106E8A /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		C37DC6972E18BC3D00106E8A /* SalesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListViewModel.swift; sourceTree = "<group>"; };
 		C37DC6A52E4ACC2B00106E8A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C37DC6A72E4AE58B00106E8A /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		C37DC6A92E4C446B00106E8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3DE262F2DFE3100009A2B67 /* SalesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DE263C2DFE3101009A2B67 /* SalesTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3DE26462DFE3101009A2B67 /* SalesTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +87,7 @@
 		C357B4D92E0010D60091373C /* SalesTracker */ = {
 			isa = PBXGroup;
 			children = (
+				C37DC6A92E4C446B00106E8A /* Assets.xcassets */,
 				C37DC6812E00C59500106E8A /* Resources */,
 				C37DC6802E00C58900106E8A /* Utilities */,
 				C37DC67F2E00C58100106E8A /* ViewModels */,
@@ -288,6 +291,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C37DC6AA2E4C446B00106E8A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
