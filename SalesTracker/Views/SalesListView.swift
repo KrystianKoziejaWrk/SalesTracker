@@ -15,21 +15,22 @@ struct SalesListView: View {
         ForEach(vm.sales) { sale in
           NavigationLink(destination: SaleEntryView(editSale: sale, rowIndex: sale.rowIndex)) {
             VStack(alignment: .leading, spacing: 6) {
-              // Name
+
               Text(sale.name)
                 .font(.headline)
 
-              // Cost & Tip (ensure they’re Doubles)
+              // Cost & Tip
               HStack {
                 Text("Cost: $\(sale.cost ?? 0, specifier: "%.2f")")
                 Text("Tip: $\(sale.tip ?? 0, specifier: "%.2f")")
               }
               .font(.subheadline)
 
-              // Notes (tap to copy)
+              // Notes 
               Text("Notes: \(sale.notes)")
                 .font(.subheadline)
                 .foregroundColor(.blue)
+              //(tap to copy)
                 .onTapGesture {
                   UIPasteboard.general.string = sale.notes
                   withAnimation { showCopiedToast = true }
@@ -38,21 +39,27 @@ struct SalesListView: View {
                   }
                 }
 
-              // Phone (tap to message)
-              if let phone = sale.phone {
-                if let smsURL = URL(string: "sms:\(phone)") {
-                  Link("📱 \(phone)", destination: smsURL)
-                    .font(.subheadline)
-                } else {
-                  Text("Phone: \(phone)")
-                    .font(.subheadline)
-                }
+              // Phone NUmber
+              if let phone = sale.phone, !phone.isEmpty {
+                Text("📱 \(phone)")
+                  .font(.subheadline)
+                  .foregroundColor(.blue)
+                  (tap to message)
+                  .onTapGesture {
+                    if let smsURL = URL(string: "sms:\(phone)") {
+                      UIApplication.shared.open(smsURL)
+                    }
+                  }
+              } else if let phone = sale.phone {
+                Text("Phone: \(phone)")
+                  .font(.subheadline)
               }
 
-              // Address (tap to open in Maps)
+              // Address 
               Text("🏠 Address: \(sale.address ?? "")")
                 .font(.subheadline)
                 .foregroundColor(.blue)
+                // (tap to open in Maps)
                 .onTapGesture {
                     if let address = sale.address, !address.isEmpty {
                         let encoded = address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""

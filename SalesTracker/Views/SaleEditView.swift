@@ -13,7 +13,6 @@ struct SaleEditView: View {
     List {
       Text("Name: \(sale.name)")
       Text("Date: \(sale.dateOfJob) at \(sale.timeOfJob)")
-      // … and so on, or just leave it blank for now
     }
     .navigationTitle("Edit Sale")
   }
