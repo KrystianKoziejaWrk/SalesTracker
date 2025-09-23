@@ -12,6 +12,9 @@ const app = express();
 app.use(cors(), express.json());
 
 // 2) Your one secret
+// I DO NOT NEED TO HIDE THIS VARIABLE
+// They need the link as well as the secret. So its unnessesary to hide the secret.
+// The link is the security measure.
 const FUNCTIONS_SECRET = 'door2door123!@#';
 
 // 3) Sheets scope
