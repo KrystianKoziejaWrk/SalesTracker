@@ -2,6 +2,7 @@
 
 SalesTracker is an iOS application designed to help sales teams efficiently track their sales, manage customer information, and monitor performance metrics. The app integrates with Google Sheets for seamless data storage and retrieval.
 
+
 ## Features
 
 - **Home Dashboard**: View total revenue and track key performance metrics like "Knocked," "Answered," and "Sold."
@@ -11,6 +12,16 @@ SalesTracker is an iOS application designed to help sales teams efficiently trac
 - **Settings**: Configure the Google Sheet ID for data synchronization.
 - **Location Integration**: Automatically grab customer addresses using device location.
 - **Google Sheets Integration**: Sync sales data with a Google Sheet for centralized storage.
+
+
+## How to Use!
+
+1. Launch the app and navigate to the **Settings** tab.
+2. Enter your Google Sheet URL or ID to configure the app.
+3. Add the service bot here as an editor: 713043310949-compute@developer.gserviceaccount.com
+4. Label the first tab of your sheet to "Sales"
+5. Start logging sales, viewing customer details, and tracking performance metrics.
+
 
 ## Installation
 
@@ -29,11 +40,6 @@ The app uses Firebase Cloud Functions to interact with Google Sheets. The backen
 2. Deploy the functions: npm run deploy
 
 
-## Usage
-
-1. Launch the app and navigate to the **Settings** tab.
-2. Enter your Google Sheet URL or ID to configure the app.
-3. Start logging sales, viewing customer details, and tracking performance metrics.
 
 ## Requirements
 
