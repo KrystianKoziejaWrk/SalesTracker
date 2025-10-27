@@ -42,6 +42,14 @@ The app uses Firebase Cloud Functions to interact with Google Sheets. The backen
 - Firebase account with Cloud Functions enabled
 - Google Sheets API enabled
 
+## IMPORTANT ⚠️ ⚠️ ⚠️ Security "Concerns"
+- Looking at the codebase for more than 3 seconds, you WILL see the secret
+  this isn't a problem because the main authentication is through the google sheet link itself, something that is intentionally sent
+  to a sales team member. Any api call requires this link and should not be an issue.
+
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
+
+
